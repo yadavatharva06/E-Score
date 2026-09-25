@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { auth } from '../config/firebase';
+import { auth } from '../../../config/firebase';
 import { signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import '../styles/UserDashboard.css';
 
-function Dashboard() {
+function UserDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -27,7 +28,10 @@ function Dashboard() {
       .then(() => {
         alert("User successfully signed out!");
         localStorage.removeItem('isAuthenticated');
-        navigate('/login', { replace: true });
+        localStorage.removeItem('userRole');
+        const userRole = localStorage.getItem('userRole');
+        console.log("Logout Successful! Current User Role:", userRole);
+        navigate('/user-login', { replace: true });
       })
       .catch((error) => {
         console.error("Error signing out:", error.message);
@@ -157,4 +161,4 @@ const styles = {
   }
 };
 
-export default Dashboard;
+export default UserDashboard;

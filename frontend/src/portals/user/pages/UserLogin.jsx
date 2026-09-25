@@ -1,11 +1,12 @@
 import { useState } from "react";
-import icon from '../media/google-small.png';
-import { auth } from '../config/firebase';
+import icon from '../../../assects/icons/google-small.png';
+import { auth } from '../../../config/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import '../styles/UserLogin.css';
 
-function LoginPage() {
+function UserLogin() {
   const [isSignup, setisSignup] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,9 +18,10 @@ function LoginPage() {
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
         localStorage.setItem('isAuthenticated', 'true');
-        navigate('/dashboard', { replace: true });
+        localStorage.setItem('userRole', 'student');
+        navigate('/user-dashboard', { replace: true });
       }).catch((error) => {
-        console.error("Signup Error:", error.code, error.message);//errors show from here
+        console.error("Signup Error:", error.code, error.message);
         alert("Error: " + error.message);
       });
   };
@@ -29,7 +31,10 @@ function LoginPage() {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         localStorage.setItem('isAuthenticated', 'true');
-        navigate('/dashboard', { replace: true }); // Navigate to the dashboard after successful login
+        localStorage.setItem('userRole', 'student');
+        const userRole = localStorage.getItem('userRole');
+        console.log("Login Successful! Current User Role:", userRole);
+        navigate('/user-dashboard', { replace: true });
       }).catch((error) => {
         console.error("Login Error:", error.code, error.message);
         alert("Error: " + error.message);
@@ -42,7 +47,8 @@ function LoginPage() {
     signInWithPopup(auth, provider)
       .then(() => {
         localStorage.setItem('isAuthenticated', 'true');
-        navigate('/dashboard', { replace: true }); // Navigate to the dashboard after successful Google login
+        localStorage.setItem('userRole', 'student');
+        navigate('/user-dashboard', { replace: true });
       })
       .catch((error) => {
         console.error("Google Auth Error:", error.code, error.message);
@@ -126,4 +132,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default UserLogin;
