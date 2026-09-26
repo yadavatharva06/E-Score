@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { auth } from '../../../config/firebase';
+import { auth, db } from '../../../config/firebase';
+import {doc, getDoc} from 'firebase/firestore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../styles/AdminLogin.css';
@@ -9,56 +10,74 @@ function AdminLogin() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  // admin login handel
   const handleAdminLogin = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('userRole', 'admin');
-        const userRole = localStorage.getItem('userRole');
-        console.log("Login Successful! Current User Role:", userRole);
-        navigate('/admin-dashboard', { replace: true });
+        CheckRole(userCredential.user.uid);
       })
       .catch((error) => {
-        console.error("Admin Login Error:", error.code, error.message);
-        alert("Authentication Failed: " + error.message);
+        alert(`Admin Login Error: ${error.code}`);
       });
+  };
+
+  // check role function
+  const CheckRole = async (uid) => {
+    try {
+      const docRef = doc(db, "admin", uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        if (userData.role === "admin") {
+          navigate('/admin-dashboard', { replace: true });
+        } else {
+          alert("Access Denied: You are not an admin. Please Login/Register from student login.");
+          navigate('/', { replace: true });
+        }
+      } else {
+        alert("Admin not found.");
+      }
+    } catch (error) {
+      console.error("Error checking admin role:", error);
+    }
   };
 
   return (
     <div className="auth-screen-admin">
       <div className="block">
         <div className="form-menu">
-          
+
           <h2>Admin Sign In</h2>
 
           <form onSubmit={handleAdminLogin}>
             <div className="input-box">
               <label htmlFor="admin-email">Admin Email</label>
-              <input 
-                type="email" 
-                placeholder="admin@escore.com" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                id="admin-email" 
+              <input
+                type="email"
+                placeholder="admin@escore.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                id="admin-email"
                 autoComplete="email"
-                required 
+                required
               />
             </div>
-            
+
             <div className="input-box">
               <label htmlFor="admin-password">Admin Password</label>
-              <input 
-                type="password" 
-                placeholder="•••••••••••" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                id="admin-password" 
+              <input
+                type="password"
+                placeholder="•••••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                id="admin-password"
                 autoComplete="current-password"
-                required 
+                required
               />
             </div>
-            
+
             <button type="submit" className="submit-btn-admin">
               Login
             </button>

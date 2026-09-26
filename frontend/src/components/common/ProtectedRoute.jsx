@@ -16,7 +16,7 @@ function ProtectedRoute({ allowedRole }) {
   if (allowedRole && userRole !== allowedRole) {
     // If a student attempts to access /admin panels, send them to student dashboard
     // If an admin attempts to access student routes, send them to admin dashboard
-    return <Navigate to={userRole === 'admin' ? '/admin-dashboard' : '/dashboard'} replace />;
+    return <Navigate to={userRole === 'admin' ? '/admin-dashboard' : '/user-dashboard'} replace />;
   }
 
   // 🔓 Validation Passed: Securely mount child views inside Layout structures using <Outlet />

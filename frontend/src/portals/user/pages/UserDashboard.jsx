@@ -26,7 +26,7 @@ function UserDashboard() {
   const handleLogOut = () => {
     signOut(auth)
       .then(() => {
-        alert("User successfully signed out!");
+        console.log("User successfully signed out!");
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('userRole');
         const userRole = localStorage.getItem('userRole');
@@ -34,8 +34,7 @@ function UserDashboard() {
         navigate('/user-login', { replace: true });
       })
       .catch((error) => {
-        console.error("Error signing out:", error.message);
-        alert(error.message);
+        console.error("Error signing out:", error.code, error.message);
       });
   };
 

@@ -6,18 +6,14 @@ import '../styles/AdminDashboard.css';
 function AdminDashboard() {
   const navigate = useNavigate();
 
+  // admin logout
   const handleAdminLogOut = () => {
     signOut(auth)
       .then(() => {
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('userRole');
-        const userRole = localStorage.removeItem('userRole');
-        console.log("User Role Removed:", userRole);        
-        alert("Admin successfully logged out.");
         navigate('/admin-login', { replace: true });
       })
       .catch((error) => {
-        alert("Error signing out: " + error.message);
+        alert(`Admin Logout Error: , ${error.code}`);
       });
   };
 
