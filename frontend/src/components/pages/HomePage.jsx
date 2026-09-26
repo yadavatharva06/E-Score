@@ -18,7 +18,6 @@ function HomePage() {
       <nav className="navbar">
         <div className="logo">E-Score</div>
         <div className="nav-links">
-          <a href="/" className="nav-link">Home</a>
           <a href="#features" className="nav-link">Features</a>
           <a href="#advantages" className="nav-link">Advantages</a>
           <a href="#interface" className="nav-link">Exam Interface</a>
