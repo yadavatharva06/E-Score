@@ -100,6 +100,28 @@ function UserDashboard() {
             </div>
           </section>
 
+
+          <section className="stats-grid">
+            <div className="stat-card">
+              <div style={styles.statLabel} className="stat-label">All-India Rank</div>
+              <div className="stat-value highlight">#1,482</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Overall Percentile</div>
+              <div className="stat-value">98.4%</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Mock Tests Solved</div>
+              <div className="stat-value">05</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Average Accuracy</div>
+              <div className="stat-value">82.3%</div>
+            </div>
+          </section>
+
+
+
           {/* Core Graphical Breakdown & Mock Test Queue split */}
           <div className="content-split-row">
             {/* Visual Progress Graph Panel */}

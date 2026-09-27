@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/UserLogin.css';
 import { db } from '../../../config/firebase';
 import { doc, setDoc } from 'firebase/firestore';
-import {RegistrationIdGenerator} from '../../../components/private/RegistrationIdGenerator'
+import { RegistrationIdGenerator } from '../../../components/private/RegistrationIdGenerator'
 
 function UserLogin() {
   const [isSignup, setisSignup] = useState(false);
@@ -15,6 +15,7 @@ function UserLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const RID = RegistrationIdGenerator();
 
   // new user register
   const handleRegister = (e) => {
@@ -28,17 +29,17 @@ function UserLogin() {
         const uName = name;
         const uEmail = user.email;
         const uid = user.uid;
-        saveUserData(uName, uEmail, uid);
+        saveUserData(uName, uEmail, uid, RID);
       }).catch((error) => {
         alert(`Registration Error: ${error.code}`);
       });
-    };
-    
-    //google signin or signup
-    const handleGoogleAuth = () => {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      signInWithPopup(auth, provider)
+  };
+
+  //google signin or signup
+  const handleGoogleAuth = () => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    signInWithPopup(auth, provider)
       .then((userCredential) => {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userRole', 'student');
@@ -47,27 +48,35 @@ function UserLogin() {
         const uName = user.displayName;
         const uEmail = user.email;
         const uid = user.uid;
-        saveUserData(uName, uEmail, uid);
+        saveUserData(uName, uEmail, uid, RID);
       })
       .catch((error) => {
         console.error("Google Auth Error:", error.code, error.message);
       });
-    };
+  };
 
   //save new user data in db after register
-  const saveUserData = async (name, email, uid) => {
+  const saveUserData = async (name, email, uid, RID) => {
     try {
 
-      const docRef = doc(db, "users", uid);
-      const RID = RegistrationIdGenerator();
+      const numRID = parseInt(RID, 10)
 
-      await setDoc(docRef, {
-        registration_ID: parseInt(RID,11),
+      await setDoc(doc(db, "users", email), {
         Name: name,
-        Email: email,
+        registration_ID: numRID,
         UID: uid,
         Role: "student",
+        createdAt: new Date().toISOString()
       });
+
+
+      // const strRID = numRID.toString();
+      // await setDoc(doc(db, `users/${email}/target`, strRID), {
+      //   Preperation_target: [],
+      //   isTargetSelected: false
+      // });
+
+
     } catch (error) {
       alert(`Error: , ${error}`);
     }

@@ -1,0 +1,196 @@
+/* ==========================================================================
+   1. MASTER CARD CORE CONTAINER
+   ========================================================================== */
+.adm-prof-card-container {
+  max-width: 820px; /* Enhanced wrapper bound alignment tracking */
+  width: 100%;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+}
+
+/* Structural Header Action Header Bar Title */
+.adm-prof-card-title {
+  margin: 0 0 30px 0;
+  font-size: 20px;
+  color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ==========================================================================
+   2. MATRIX SIDE-BY-SIDE GRID WORKSPACE
+   ========================================================================== */
+.adm-prof-dashboard-layout {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+/* ==========================================================================
+   3. LEFT SIDE AVATAR DISPLAY UNIT
+   ========================================================================== */
+.adm-prof-avatar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.adm-prof-avatar-circle-wrapper {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  background-color: #f8fafc;
+  cursor: default !important;
+  pointer-events: none;
+}
+
+.adm-prof-avatar-image-circle {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.adm-prof-avatar-padding-bg {
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.adm-prof-avatar-display-name {
+  margin: 20px 0 6px 0;
+  font-size: 16px;
+  color: #0f172a;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.3px;
+}
+
+.adm-prof-avatar-role-label {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+  background-color: #f1f5f9;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+}
+
+/* ==========================================================================
+   4. RIGHT SIDE SYSTEM PARAMETER FORM SHELL
+   ========================================================================== */
+.adm-prof-setting-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.adm-prof-form-group-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.adm-prof-setting-field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  letter-spacing: 0.2px;
+}
+
+.adm-prof-setting-text-input {
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #0f172a;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.adm-prof-setting-text-input:focus {
+  outline: none;
+  border-color: #ffa500;
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.12);
+}
+
+/* Locked Disabled Field Framework Styles */
+.adm-prof-disabled-field {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+  font-weight: 500;
+}
+
+/* Inline Grid Mapping Setup for First/Last Name Side-By-Side Row */
+.adm-prof-setting-form > div[style*="display: grid"] {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   5. OPERATIONAL MUTATION TRIGGER ACTION BUTTON
+   ========================================================================== */
+.adm-prof-setting-save-btn {
+  background-color: #ffa500;
+  color: #ffffff;
+  border: 1px solid #ffa500;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  margin-top: 10px;
+  box-shadow: 0 2px 4px rgba(255, 165, 0, 0.08);
+}
+
+.adm-prof-setting-save-btn:hover {
+  background-color: #e59400;
+  border-color: #e59400;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE LAYER ADAPTATIONS
+   ========================================================================== */
+@media (max-width: 680px) {
+  .adm-prof-dashboard-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+  }
+  .adm-prof-avatar-column {
+    width: 100%;
+  }
+  .adm-prof-setting-form > div[style*="display: grid"] {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .adm-prof-setting-save-btn {
+    align-self: stretch;
+    text-align: center;
+  }
+}

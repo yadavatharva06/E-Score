@@ -1,20 +1,21 @@
 .dashboard-container {
   display: flex;
-  min-height: 100vh;
-  font-family:Arial, Helvetica, sans-serif;
-  background-color: #f7f7f7;
-  color: #333333;
+  height: 100vh;        /* Locks the overall application structure viewport height */
+  width: 100vw;
+  overflow: hidden;     /* Prevents the outer main browser layer from scrolling layout bars */
 }
 
 /* Sidebar Framework */
 .dashboard-sidebar {
   width: 260px;
-  background-color: #0b1a30;
+  height: 100%;         /* Spans the exact full fixed height of the layout */
+  background-color: #0b1a30; /* Your theme dark navy tone */
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  padding: 24px 20px;
+  box-sizing: border-box;
+  flex-shrink: 0;       /* Forces the layout model from compressing the sidebar width spacing */
 }
 
 .sidebar-brand {
@@ -68,10 +69,12 @@
 
 /* Main Working Canvas */
 .dashboard-main {
-  flex: 1;
+  flex: 1;              /* Claims all remaining screen property spaces next to the sidebar */
+  height: 100%;
+  overflow-y: auto;     /* Triggers independent vertical scrolling metrics strictly on this container panel */
+  background-color: #f7f7f7;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
 }
 
 .dashboard-header {

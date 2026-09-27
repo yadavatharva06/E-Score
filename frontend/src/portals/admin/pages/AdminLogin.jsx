@@ -17,7 +17,7 @@ function AdminLogin() {
       .then((userCredential) => {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userRole', 'admin');
-        CheckRole(userCredential.user.uid);
+        CheckRole(userCredential.user.email);
       })
       .catch((error) => {
         alert(`Admin Login Error: ${error.code}`);
@@ -25,9 +25,9 @@ function AdminLogin() {
   };
 
   // check role function
-  const CheckRole = async (uid) => {
+  const CheckRole = async (email) => {
     try {
-      const docRef = doc(db, "admin", uid);
+      const docRef = doc(db, "admin", email);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {

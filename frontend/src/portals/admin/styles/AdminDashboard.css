@@ -1,20 +1,29 @@
+/* ==========================================================================
+   1. CORE APPLICATION VIEWPORT SHELL
+   ========================================================================== */
 .admin-dashboard-container {
   display: flex;
-  min-height: 100vh;
-  font-family: 'Segoe UI', Roboto, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;         /* Prevents external parent browser scroll layers */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: #f8fafc;
-  margin: 0;
 }
 
+/* ==========================================================================
+   2. FIXED LEFT SIDEBAR PANEL
+   ========================================================================== */
 .admin-sidebar {
   width: 260px;
-  background-color: #0b1a30;
+  height: 100%;             /* Locks height to match application shell layout */
+  background-color: #0f172a; /* Deep slate administrative layout dark theme */
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  padding: 24px 20px;
   box-sizing: border-box;
+  flex-shrink: 0;           /* Prevents flexible flex row compression rules */
+  border-right: 1px solid #1e293b;
 }
 
 .sidebar-title {
@@ -22,55 +31,73 @@
   font-weight: bold;
   color: #ffa500;
   margin-bottom: 40px;
-  text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .admin-nav-links {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  flex: 1;
+  flex: 1;                  /* Dynamic spacer layout pushes logging actions to bottom */
 }
 
+/* Sidebar Nav Option Triggers */
 .admin-nav-btn {
-  background: transparent;
+  background: none;
   border: none;
   color: #94a3b8;
-  padding: 12px 16px;
   text-align: left;
+  padding: 12px 16px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
 }
 
-.admin-nav-btn.active, .admin-nav-btn:hover {
-  background-color: rgba(255, 165, 0, 0.15);
-  color: #ffa500;
+.admin-nav-btn:hover {
+  background-color: #1e293b;
+  color: #ffffff;
 }
 
-.logout-btn {
+.admin-nav-btn.active {
+  background-color: #ffa500; /* Distinct styling highlighting current screen focus */
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Operational Exit Action Trigger */
+.admin-sidebar .logout-btn {
   background-color: #ef4444;
   color: #ffffff;
   border: none;
   padding: 12px;
   border-radius: 6px;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
   width: 100%;
+  margin-top: auto;         /* Pins cleanly to bottom framework margin layers */
 }
 
-.logout-btn:hover {
+.admin-sidebar .logout-btn:hover {
   background-color: #dc2626;
 }
 
+/* ==========================================================================
+   3. SCROLLABLE CONTENT WORKSPACE
+   ========================================================================== */
 .admin-main-content {
-  flex: 1;
+  flex: 1;                  /* Claims all remaining horizontally available space */
+  height: 100%;
+  overflow-y: auto;         /* Independent vertical scrolling layer */
   display: flex;
   flex-direction: column;
 }
 
+/* Header Action Bar Layout */
 .admin-header {
   background-color: #ffffff;
   padding: 20px 40px;
@@ -78,31 +105,27 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 100; /* Floats cleanly above standard workspace tables and lists */
 }
 
 .admin-header h2 {
   margin: 0;
-  color: #0b1a30;
+  color: #1e293b;
+  font-size: 24px;
 }
 
+.admin-role-badge {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Core Document Padding Layer Wrapper */
 .admin-workspace-body {
   padding: 40px;
-}
-
-.welcome-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 30px;
-}
-
-.welcome-card h3 {
-  color: #0b1a30;
-  margin: 0 0 10px 0;
-}
-
-.welcome-card p {
-  color: #64748b;
-  font-size: 15px;
-  margin: 0;
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
 }
