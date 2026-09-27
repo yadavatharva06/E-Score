@@ -15,6 +15,8 @@ function AdminLogin() {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userRole', 'admin');
         CheckRole(userCredential.user.uid);
       })
       .catch((error) => {
@@ -30,7 +32,7 @@ function AdminLogin() {
 
       if (docSnap.exists()) {
         const userData = docSnap.data();
-        if (userData.role === "admin") {
+        if (userData.Role === "admin") {
           navigate('/admin-dashboard', { replace: true });
         } else {
           alert("Access Denied: You are not an admin. Please Login/Register from student login.");

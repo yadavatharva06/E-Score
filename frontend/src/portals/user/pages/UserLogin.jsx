@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/UserLogin.css';
 import { db } from '../../../config/firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import {RegistrationIdGenerator} from '../../../components/private/RegistrationIdGenerator'
 
 function UserLogin() {
   const [isSignup, setisSignup] = useState(false);
@@ -15,11 +16,13 @@ function UserLogin() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  // new user handle
+  // new user register
   const handleRegister = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userRole', 'student');
         navigate('/user-dashboard', { replace: true });
         const user = userCredential.user;
         const uName = name;
@@ -37,6 +40,8 @@ function UserLogin() {
       provider.setCustomParameters({ prompt: 'select_account' });
       signInWithPopup(auth, provider)
       .then((userCredential) => {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userRole', 'student');
         navigate('/user-dashboard', { replace: true });
         const user = userCredential.user;
         const uName = user.displayName;
@@ -54,12 +59,14 @@ function UserLogin() {
     try {
 
       const docRef = doc(db, "users", uid);
+      const RID = RegistrationIdGenerator();
 
       await setDoc(docRef, {
-        name: name,
-        email: email,
-        uid: uid,
-        role: "student",
+        registration_ID: parseInt(RID,11),
+        Name: name,
+        Email: email,
+        UID: uid,
+        Role: "student",
       });
     } catch (error) {
       alert(`Error: , ${error}`);
@@ -71,6 +78,8 @@ function UserLogin() {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userRole', 'student');
         navigate('/user-dashboard', { replace: true });
       }).catch((error) => {
         alert(`Login Error:  ${error.code}`);

@@ -10,6 +10,8 @@ function AdminDashboard() {
   const handleAdminLogOut = () => {
     signOut(auth)
       .then(() => {
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('userRole');
         navigate('/admin-login', { replace: true });
       })
       .catch((error) => {
