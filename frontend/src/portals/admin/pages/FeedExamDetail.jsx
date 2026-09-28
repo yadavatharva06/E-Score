@@ -11,8 +11,8 @@ export default function FeedExamDetails() {
   const [examIdCode, setExamIdCode] = useState('');            // e.g., 101
 
   return (
-    <div className="admin-panel-card setting-wrapper-card" style={{ maxWidth: '800px' }}>
-      <h3 className="panel-card-title" style={{ fontSize: '20px', paddingBottom: '15px' }}>
+    <div className="admin-panel-card">
+      <h3 className="panel-card-title">
         ⚙️ Core Question Bank Engine
       </h3>
       <p className="setting-description">
@@ -20,15 +20,14 @@ export default function FeedExamDetails() {
       </p>
 
       {/* 🔝 MASTER SELECT ACTION dropdown */}
-      <div className="form-group-block" style={{ marginBottom: '30px', borderBottom: '2px dashed #e2e8f0', paddingBottom: '20px' }}>
-        <label className="setting-field-label" style={{ color: '#ffa500', fontSize: '15px' }}>
+      <div className="form-group-block">
+        <label className="setting-field-label">
           Select Management Action Task
         </label>
         <select 
           className="setting-text-input" 
           value={panelAction}
           onChange={(e) => setPanelAction(e.target.value)}
-          style={{ borderColor: '#ffa500', fontWeight: '600' }}
         >
           <option value="exam">1. Add New Master Exam Category (UPSC, SSC, Defences...)</option>
           <option value="subject">2. Add Stream Subject Entry (Maths, Science...)</option>

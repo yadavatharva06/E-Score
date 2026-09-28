@@ -1,8 +1,5 @@
-/* ==========================================================================
-   1. CORE CONTAINER CARD TEMPLATE
-   ========================================================================== */
-.admin-panel-card.setting-wrapper-card {
-  max-width: 820px; /* Custom sizing box matrix matching user profile frames */
+.admin-panel-card {
+  max-width: 820px;
   width: 100%;
   margin: 0 auto;
   background-color: #ffffff;
@@ -13,7 +10,6 @@
   box-sizing: border-box;
 }
 
-/* Base Component Content Card Title Header Block */
 .panel-card-title {
   margin: 0 0 15px 0;
   font-size: 20px;
@@ -22,9 +18,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  padding-bottom: '15px';
 }
 
-/* Brief Meta Data Roster Description Text */
 .setting-description {
   font-size: 14px;
   color: #64748b;
@@ -35,20 +31,14 @@
   padding-bottom: 20px;
 }
 
-/* ==========================================================================
-   2. REUSABLE INLINE INPUT FIELDS STYLING CHAINS
-   ========================================================================== */
-.admin-setting-form {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
 .form-group-block {
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 100%;
+  margin-bottom: '30px'; 
+  border-bottom: '2px dashed #e2e8f0';
+  padding-bottom: '20px';
 }
 
 .setting-field-label {
@@ -62,6 +52,7 @@
   width: 100%;
   padding: 12px 14px;
   font-size: 14px;
+  font-weight: '600';
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   background-color: #ffffff;
@@ -74,6 +65,7 @@
   outline: none;
   border-color: #ffa500;
   box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.12);
+  margin-bottom: 20px;
 }
 
 textarea.setting-text-input {
@@ -82,29 +74,18 @@ textarea.setting-text-input {
   line-height: 1.5;
 }
 
-/* ==========================================================================
-   3. STRUCTURAL GRID BLOCK UTILITIES
-   ========================================================================== */
-/* Form element row matching the side-by-side taxonomy layouts */
-.admin-setting-form div[style*="display: grid"],
-.admin-setting-form div[style*="display:grid"] {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  width: 100%;
-}
-
-/* Dynamic option block stack spacer alignment constraints */
-.admin-setting-form div[style*="display: flex"] {
-  display: flex !important;
+.admin-setting-form {
+  display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: 100%;
+  gap: 22px;
 }
 
-/* ==========================================================================
-   4. OPERATIONAL DATABASE CONSOLE ACTION ACTION TRIGGER BUTTONS
-   ========================================================================== */
+.form-group-block{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .setting-save-btn {
   background-color: #ffa500;
   color: #ffffff;
@@ -123,22 +104,4 @@ textarea.setting-text-input {
 .setting-save-btn:hover {
   background-color: #e59400;
   border-color: #e59400;
-}
-
-/* ==========================================================================
-   5. RESPONSIVE CONTAINER OVERRIDES FOR SCALED VIEWS
-   ========================================================================== */
-@media (max-width: 650px) {
-  .admin-panel-card.setting-wrapper-card {
-    padding: 25px;
-  }
-  .admin-setting-form div[style*="display: grid"],
-  .admin-setting-form div[style*="display:grid"] {
-    grid-template-columns: 1fr !important;
-    gap: 20px;
-  }
-  .setting-save-btn {
-    align-self: stretch;
-    text-align: center;
-  }
 }
