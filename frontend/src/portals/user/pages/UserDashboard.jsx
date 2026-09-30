@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { auth } from '../../../config/firebase';
 import { signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import '../styles/UserDashboard.css';
+import styles from '../styles/UserDashboard.css';
 
 function UserDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+
+  const scrollToSection = (sectionId) => {
+    setActiveTab(sectionId === 'performance-analysis' ? 'analysis' : 'overview');
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   // Hardcoded real exam analytical metrics
   const scoreData = [
@@ -48,19 +53,19 @@ function UserDashboard() {
         <nav className="sidebar-nav">
           <button 
             className={`nav-item-btn ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
+            onClick={() => scrollToSection('dashboard-overview')}
           >
             🏠 Home Overview
           </button>
           <button 
-            className={`nav-item-btn ${activeTab === 'tests' ? 'active' : ''}`}
-            onClick={() => setActiveTab('tests')}
+            className="nav-item-btn"
+            onClick={() => navigate('/user-exams')}
           >
             📝 Available Mock Tests
           </button>
           <button 
             className={`nav-item-btn ${activeTab === 'analysis' ? 'active' : ''}`}
-            onClick={() => setActiveTab('analysis')}
+            onClick={() => scrollToSection('performance-analysis')}
           >
             📊 Detailed Analytics
           </button>
@@ -79,7 +84,7 @@ function UserDashboard() {
           </div>
         </header>
 
-        <div className="dashboard-content">
+        <div className="dashboard-content" id="dashboard-overview">
           {/* Top Level Metric Evaluation Ribbon */}
           <section className="stats-grid">
             <div className="stat-card">
@@ -101,31 +106,10 @@ function UserDashboard() {
           </section>
 
 
-          <section className="stats-grid">
-            <div className="stat-card">
-              <div style={styles.statLabel} className="stat-label">All-India Rank</div>
-              <div className="stat-value highlight">#1,482</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-label">Overall Percentile</div>
-              <div className="stat-value">98.4%</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-label">Mock Tests Solved</div>
-              <div className="stat-value">05</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-label">Average Accuracy</div>
-              <div className="stat-value">82.3%</div>
-            </div>
-          </section>
-
-
-
           {/* Core Graphical Breakdown & Mock Test Queue split */}
           <div className="content-split-row">
             {/* Visual Progress Graph Panel */}
-            <div className="panel-card">
+            <div className="panel-card" id="performance-analysis">
               <h3 className="panel-title">Score Trajectory & Performance Analysis</h3>
               <div className="graph-canvas">
                 {scoreData.map((item, idx) => (
@@ -171,12 +155,5 @@ function UserDashboard() {
     </div>
   );
 }
-
-// Inline fallback variables matching dashboard theme configuration requirements
-const styles = {
-  statLabel: {
-    letterSpacing: '0.5px'
-  }
-};
 
 export default UserDashboard;
