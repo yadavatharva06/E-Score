@@ -9,6 +9,7 @@ export default function CreateLiveExam() {
   const [examTitle, setExamTitle] = useState('');
   const [courseCode, setCourseCode] = useState('');
   const [subjects, setSubjects] = useState([]);
+  const [selectedSubjectIds, setSelectedSubjectIds] = useState([]);
   const [subjectQuestionCounts, setSubjectQuestionCounts] = useState({});
 
   useEffect(() => {
@@ -45,10 +46,17 @@ export default function CreateLiveExam() {
     };
   }, []);
 
-  const totalQuestionCount = Object.values(subjectQuestionCounts).reduce(
-    (total, counts) => total + counts.easy + counts.moderate + counts.high,
-    0
-  );
+  const selectedSubjects = subjects.filter((subject) => selectedSubjectIds.includes(subject.id));
+  const totalQuestionCount = selectedSubjects.reduce((total, subject) => {
+    const counts = subjectQuestionCounts[subject.id] || { easy: 0, moderate: 0, high: 0 };
+    return total + counts.easy + counts.moderate + counts.high;
+  }, 0);
+
+  const toggleSubject = (subjectId) => {
+    setSelectedSubjectIds((currentIds) => currentIds.includes(subjectId)
+      ? currentIds.filter((id) => id !== subjectId)
+      : [...currentIds, subjectId]);
+  };
 
   const updateSubjectQuestionCount = (subjectId, difficulty, value) => {
     setSubjectQuestionCounts((currentCounts) => ({
@@ -77,13 +85,19 @@ export default function CreateLiveExam() {
       return;
     }
 
-    if (totalQuestionCount < 1) {
-      setErrorMessage('Allocate at least one question to a subject.');
+    if (!selectedSubjects.length) {
+      setErrorMessage('Select at least one subject for this exam.');
       setIsProcessing(false);
       return;
     }
 
-    const subjectQuestionAllocations = subjects.map((subject) => {
+    if (totalQuestionCount < 1) {
+      setErrorMessage('Allocate at least one question to a selected subject.');
+      setIsProcessing(false);
+      return;
+    }
+
+    const subjectQuestionAllocations = selectedSubjects.map((subject) => {
       const counts = subjectQuestionCounts[subject.id] || { easy: 0, moderate: 0, high: 0 };
       return {
         subjectId: subject.id,
@@ -112,6 +126,7 @@ export default function CreateLiveExam() {
       setIsDeployed(true);
       setExamTitle('');
       setCourseCode('');
+      setSelectedSubjectIds([]);
       setSubjectQuestionCounts(subjects.reduce((counts, subject) => ({
         ...counts,
         [subject.id]: { easy: 0, moderate: 0, high: 0 },
@@ -263,19 +278,51 @@ export default function CreateLiveExam() {
         </div>
 
         <div className="space-y-4">
+          <div className="border-b border-slate-800 pb-4">
+            <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h4 className="text-sm font-semibold text-white">Select exam subjects</h4>
+                <p className="mt-1 text-xs text-slate-400">Choose the subjects included in this mock exam.</p>
+              </div>
+              <p className="text-xs font-semibold text-amber-400" aria-live="polite">{selectedSubjects.length} selected</p>
+            </div>
+            {subjects.length === 0 ? (
+              <p className="rounded-xl border border-slate-800 bg-slate-800/30 px-4 py-5 text-sm text-slate-400">
+                No subjects found. Add subjects in the question bank before creating a live exam.
+              </p>
+            ) : (
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {subjects.map((subject) => {
+                  const isSelected = selectedSubjectIds.includes(subject.id);
+                  return (
+                    <label key={subject.id} className={`flex cursor-pointer items-center gap-3 border px-3 py-3 text-sm transition ${isSelected ? 'border-amber-500/50 bg-amber-500/10 text-white' : 'border-slate-800 bg-slate-800/30 text-slate-300 hover:border-slate-600'}`}>
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => toggleSubject(subject.id)}
+                        className="h-4 w-4 accent-amber-400"
+                      />
+                      <span>{subject.subjectName}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-wrap items-end justify-between gap-3 border-b border-slate-800 pb-3">
             <div>
               <h4 className="text-sm font-semibold text-white">Question Allocation by Subject</h4>
-              <p className="text-xs text-slate-400 mt-1">Set the number of questions at each difficulty for every subject.</p>
+              <p className="text-xs text-slate-400 mt-1">Set the number of questions at each difficulty for selected subjects.</p>
             </div>
             <p className="text-sm font-semibold text-amber-400" aria-live="polite">
               Exam total: {totalQuestionCount} questions
             </p>
           </div>
 
-          {subjects.length === 0 ? (
+          {selectedSubjects.length === 0 ? (
             <p className="rounded-xl border border-slate-800 bg-slate-800/30 px-4 py-5 text-sm text-slate-400">
-              No subjects found. Add subjects in the question bank before creating a live exam.
+              Select one or more subjects above to set their question allocation.
             </p>
           ) : (
             <div className="divide-y divide-slate-800 rounded-xl border border-slate-800">
@@ -286,7 +333,7 @@ export default function CreateLiveExam() {
                 <span>High</span>
                 <span>Total</span>
               </div>
-              {subjects.map((subject) => {
+              {selectedSubjects.map((subject) => {
                 const counts = subjectQuestionCounts[subject.id] || { easy: 0, moderate: 0, high: 0 };
                 const subjectTotal = counts.easy + counts.moderate + counts.high;
 

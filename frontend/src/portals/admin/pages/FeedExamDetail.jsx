@@ -144,10 +144,7 @@ export default function FeedExamDetails() {
           {errorMessage}
         </div>
       )}
-
-      {/* ==========================================================================
-         VIEWPORT LAYER 3: ADD QUESTIONS AND OPTIONS MAPPING
-         ========================================================================== */}
+      
       <form
         className="space-y-6 bg-slate-800/20 border border-slate-800 rounded-2xl p-6 sm:p-8"
         onSubmit={handleAddQuestion}

@@ -9,7 +9,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { deleteField, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { RegistrationIdGenerator } from '../../../components/private/RegistrationIdGenerator';
 
 function UserLogin() {
@@ -21,7 +21,8 @@ function UserLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const ensureUserIsActive = async (user) => {
-    const profileSnapshot = await getDoc(doc(db, 'users', user.email));
+    const profileRef = doc(db, 'users', user.email);
+    const profileSnapshot = await getDoc(profileRef);
 
     if (!profileSnapshot.exists() || profileSnapshot.data().status === 'Suspended') {
       await signOut(auth);
@@ -29,10 +30,18 @@ function UserLogin() {
         ? 'Your account has been suspended. Contact an administrator.'
         : 'Your user profile could not be found.');
     }
+
+    if (Object.prototype.hasOwnProperty.call(profileSnapshot.data(), 'Password')) {
+      try {
+        await updateDoc(profileRef, { Password: deleteField() });
+      } catch (error) {
+        console.warn('Could not remove a legacy plaintext password from the user profile:', error);
+      }
+    }
   };
 
   // Save new user data in Firestore after registration
-  const saveUserData = async (uName, uEmail, uid, uPassword) => {
+  const saveUserData = async (uName, uEmail, uid) => {
     try {
       const userDocRef = doc(db, 'users', uEmail);
       const existingDoc = await getDoc(userDocRef);
@@ -43,7 +52,6 @@ function UserLogin() {
         await setDoc(userDocRef, {
           Name: uName,
           Email: uEmail,
-          Password: uPassword,
           registration_ID: numRID,
           UID: uid,
           Role: 'student',
@@ -65,7 +73,7 @@ function UserLogin() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      await saveUserData(name, user.email, user.uid, password);
+      await saveUserData(name, user.email, user.uid);
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userRole', 'student');
       navigate('/user-dashboard', { replace: true });
